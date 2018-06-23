@@ -3,21 +3,19 @@
 
 // The memory address of the framebuffer
 #define FB_MEMORY 0x000B8000
-// The size of the framebuffer
-#define FB_NUM_COLS 80
-#define FB_NUM_ROWS 25
-#define FB_LAST_INDEX (FB_NUM_COLS * FB_NUM_ROWS - 1)
+// The length of the framebuffer
+#define FB_SIZE (FB_NUM_COLS * FB_NUM_ROWS)
 // The I/O ports
-#define FB_COMMAND_PORT         0x3D4
-#define FB_DATA_PORT            0x3D5
+#define COMMAND_PORT         0x3D4
+#define DATA_PORT            0x3D5
 // The I/O port commands
-#define FB_HIGH_BYTE    14
-#define FB_LOW_BYTE     15
+#define HIGH_BYTE    14
+#define LOW_BYTE     15
 // The default color
-#define FB_DEFAULT_COLOR FB_CREATE_COLOR(FB_GREEN, FB_BLACK)
+#define DEFAULT_COLOR CREATE_COLOR(FB_GREEN, FB_BLACK)
 // Macros
-#define FB_CREATE_COLOR(fg, bg) (((bg & 0x0F) << 4) | (fg & 0x0F))
-#define FB_ADDRESS(row, col) (FB_NUM_COLS * row + col)
+#define CREATE_COLOR(fg, bg) (((bg & 0x0F) << 4) | (fg & 0x0F))
+#define POS_TO_ADDR(row, col) (FB_NUM_COLS * row + col)
 
 // Internal framebuffer data
 static char *fb = (char *) FB_MEMORY;
@@ -33,15 +31,15 @@ static void write_index(unsigned int i, char c) {
 
 // Writes a character at the given row and column of the framebuffer.
 static void write_pos(unsigned int row, unsigned int col, char c) {
-    write_index(FB_ADDRESS(row, col), c);
+    write_index(POS_TO_ADDR(row, col), c);
 }
 
 // Sets the framebuffer cursor to the index.
 static void set_cursor(unsigned int pos) {
-    outb(FB_COMMAND_PORT, FB_HIGH_BYTE);
-    outb(FB_DATA_PORT,    ((pos >> 8) & 0x00FF));
-    outb(FB_COMMAND_PORT, FB_LOW_BYTE);
-    outb(FB_DATA_PORT,    pos & 0x00FF);
+    outb(COMMAND_PORT, HIGH_BYTE);
+    outb(DATA_PORT,    ((pos >> 8) & 0x00FF));
+    outb(COMMAND_PORT, LOW_BYTE);
+    outb(DATA_PORT,    pos & 0x00FF);
     cursor_pos = pos;
 }
 
@@ -50,7 +48,7 @@ static void scroll() {
     unsigned int i, j, k, m;
     for (i = 1; i < FB_NUM_ROWS; i++) {
         for (j = 0; j < FB_NUM_COLS; j++) {
-            k = 2 * FB_ADDRESS(i, j);
+            k = 2 * POS_TO_ADDR(i, j);
             m = k - (2 * FB_NUM_COLS);
             fb[m] = fb[k];
             fb[m + 1] = fb[k + 1];
@@ -75,7 +73,7 @@ void fb_clear() {
 
 // Initializes the framebuffer with its default colors.
 void fb_init() {
-    color = FB_DEFAULT_COLOR;
+    color = DEFAULT_COLOR;
     fb_clear();
 }
 
@@ -83,7 +81,7 @@ void fb_init() {
 void fb_print_byte(char b) {
     write_index(cursor_pos, b);
     set_cursor(cursor_pos + 1);
-    if (cursor_pos > FB_LAST_INDEX) {
+    if (cursor_pos >= FB_SIZE) {
         scroll();
     }
 }
@@ -97,5 +95,5 @@ void fb_print_string(char const *str) {
 
 // Sets the cursor to a row and column.
 void fb_set_cursor(unsigned int row, unsigned col) {
-    set_cursor(FB_ADDRESS(row, col));
+    set_cursor(POS_TO_ADDR(row, col));
 }

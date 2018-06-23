@@ -1,6 +1,9 @@
 #ifndef INCLUDE_FB_H
 #define INCLUDE_FB_H
 
+// The size of the framebuffer
+#define FB_NUM_COLS 80
+#define FB_NUM_ROWS 25
 // Framebuffer colors
 #define FB_BLACK 0x0
 #define FB_BLUE 0x1

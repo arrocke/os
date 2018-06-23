@@ -4,3 +4,4 @@ bochslog.txt
 kernel.elf
 *.o
 *.iso
+com*.out
