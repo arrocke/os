@@ -2,3 +2,5 @@
 *.log
 bochslog.txt
 kernel.elf
+*.o
+*.iso
