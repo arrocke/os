@@ -9,7 +9,7 @@ SRC_DIR=src
 # Build targets
 ISO=$(BUILD_DIR)/os.iso
 KERNEL=$(BUILD_DIR)/kernel.elf
-FILES=loader kmain fb serial io
+FILES=loader kmain fb serial io log
 OBJECTS=$(patsubst %, $(OBJ_DIR)/%.o, $(FILES))
 
 # Compiler settings

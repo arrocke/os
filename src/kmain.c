@@ -1,9 +1,9 @@
 #include "fb.h"
-#include "serial.h"
+#include "log.h"
 
 int kmain() {
+    log_init();
     fb_init();
-    serial_init(COM1);
 
     return 0xDEADDEAD;
 }

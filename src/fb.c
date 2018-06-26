@@ -1,5 +1,6 @@
 #include "io.h"
 #include "fb.h"
+#include "log.h"
 
 // The memory address of the framebuffer
 #define FB_MEMORY 0x000B8000
@@ -75,6 +76,7 @@ void fb_clear() {
 void fb_init() {
     color = DEFAULT_COLOR;
     fb_clear();
+    log_println("VGA framebuffer initialized.", LOG_INFO);
 }
 
 // Writes a byte to the framebuffer and moves the cursor.
