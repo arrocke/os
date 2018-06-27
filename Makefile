@@ -61,7 +61,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 
 # Comple object files from assembly source code
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.s
-	$(AS) $(ASFLAGS) $< -o $@
+	$(AS) $(ASFLAGS) -I $(INCLUDE_DIR) $< -o $@
 
 # Clean the build directories
 clean:

@@ -19,7 +19,7 @@
 #define POS_TO_ADDR(row, col) (FB_NUM_COLS * row + col)
 
 // Internal framebuffer data
-static uint8_t *fb = (char *) FB_MEMORY;
+static uint8_t *fb = (uint8_t *) FB_MEMORY;
 static uint16_t cursor_pos;
 static uint8_t color;
 
