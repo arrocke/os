@@ -19,24 +19,24 @@
 #define POS_TO_ADDR(row, col) (FB_NUM_COLS * row + col)
 
 // Internal framebuffer data
-static char *fb = (char *) FB_MEMORY;
-static unsigned int cursor_pos;
-static char color;
+static uint8_t *fb = (char *) FB_MEMORY;
+static uint16_t cursor_pos;
+static uint8_t color;
 
 // Writes a character to the framebuffer at the given position with the set colors.
 // This does not move the cursor
-static void write_index(unsigned int i, char c) {
+static void write_index(uint16_t i, uint8_t c) {
     fb[2 * i] = c;
     fb[2 * i + 1] = color;
 }
 
 // Writes a character at the given row and column of the framebuffer.
-static void write_pos(unsigned int row, unsigned int col, char c) {
+static void write_pos(uint16_t row, uint16_t col, uint8_t c) {
     write_index(POS_TO_ADDR(row, col), c);
 }
 
 // Sets the framebuffer cursor to the index.
-static void set_cursor(unsigned int pos) {
+static void set_cursor(uint16_t pos) {
     outb(COMMAND_PORT, HIGH_BYTE);
     outb(DATA_PORT,    ((pos >> 8) & 0x00FF));
     outb(COMMAND_PORT, LOW_BYTE);
@@ -46,7 +46,7 @@ static void set_cursor(unsigned int pos) {
 
 // Scrolls the screen to make room for a new row.
 static void scroll() {
-    unsigned int i, j, k, m;
+    uint16_t i, j, k, m;
     for (i = 1; i < FB_NUM_ROWS; i++) {
         for (j = 0; j < FB_NUM_COLS; j++) {
             k = 2 * POS_TO_ADDR(i, j);
@@ -63,7 +63,7 @@ static void scroll() {
 
 // Clears the framebuffer and moves the cursor back to the top corner.
 void fb_clear() {
-    unsigned int i, j;
+    uint8_t i, j;
     for (i = 0; i < FB_NUM_ROWS; i++) {
         for (j = 0; j < FB_NUM_COLS; j++) {
             write_pos(i, j, ' ');
@@ -80,7 +80,7 @@ void fb_init() {
 }
 
 // Writes a byte to the framebuffer and moves the cursor.
-void fb_print_byte(char b) {
+void fb_print_byte(uint8_t b) {
     write_index(cursor_pos, b);
     set_cursor(cursor_pos + 1);
     if (cursor_pos >= FB_SIZE) {
@@ -96,6 +96,6 @@ void fb_print_string(char const *str) {
 }
 
 // Sets the cursor to a row and column.
-void fb_set_cursor(unsigned int row, unsigned col) {
+void fb_set_cursor(uint16_t row, uint16_t col) {
     set_cursor(POS_TO_ADDR(row, col));
 }

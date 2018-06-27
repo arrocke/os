@@ -2,9 +2,9 @@
 #define INCLUDE_IO_H
 
 // Sends the given data to the given I/O port.
-void outb(unsigned short port, unsigned char data);
+void outb(uint8_t port, uint8_t data);
 
 // Read a byte from an I/O port.
-unsigned char inb(unsigned short port);
+unsigned char inb(uint8_t port);
 
 #endif

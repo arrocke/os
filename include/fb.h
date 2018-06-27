@@ -1,6 +1,8 @@
 #ifndef INCLUDE_FB_H
 #define INCLUDE_FB_H
 
+#include "stdint.h"
+
 // The size of the framebuffer
 #define FB_NUM_COLS 80
 #define FB_NUM_ROWS 25
@@ -29,13 +31,13 @@ enum FB_Colors {
 void fb_print_string(char const *buf);
 
 // Prints a byte to the framebuffer.
-void fb_print_byte(char i);
+void fb_print_byte(uint8_t i);
 
 // Clears the framebuffer.
 void fb_clear();
 
 // Sets the cursor position of the framebuffer.
-void fb_set_cursor(unsigned int row, unsigned int col);
+void fb_set_cursor(uint16_t row, uint16_t col);
 
 // Initializes the framebuffer.
 void fb_init();

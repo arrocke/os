@@ -10,7 +10,7 @@ enum LogLevel {
 };
 
 // Prints a message to the log.
-void log_println(char const *msg, int level);
+void log_println(char const *msg, uint8_t level);
 
 // Initializes the log
 void log_init();
