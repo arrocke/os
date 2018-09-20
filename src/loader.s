@@ -25,4 +25,4 @@ loader:                         ; the loader label (defined as entry point in li
                                 ; point esp to the start of the stack (end of memory area)
     call kmain                  ; call the main function of the kernel
 .loop:
-    jmp .loop                   ; loop forever
+    jmp .loop                   ; loop forever if kmain exits
